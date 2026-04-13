@@ -194,7 +194,7 @@ tk.Checkbutton(
 
 tk.Label(
     tab_settings,
-    text="* If disabled: typing stays ON, but tab switching uses no shortcuts",
+    text="* If disabled: typing stays ON, tab switching tetap berjalan via Ctrl+Tab",
     font=("Arial", 9, "italic"),
     fg="gray"
 ).pack(anchor='w', padx=20, pady=(0, 10))

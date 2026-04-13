@@ -98,45 +98,21 @@ class Mouse(Activity):
 
     def switchTab(self, app=None):
         if not self.is_active: return
-        if not self.use_modifiers:
-            self.handler.handler("Key Modifiers Disabled: skip tab switching")
-            return
-        if self._platform == "Darwin":
-            self._release_modifiers()
-            count = random.randint(1, 5)
-            if app == "chrome":
-                for _ in range(count):
-                    if not self.is_active: break
-                    self.handler.handler("Key Press ctrl+shift+]")
-                    self._before_keypress()
-                    pyautogui.hotkey('ctrl', 'shift', ']')
-                    self._after_keypress()
-                    self.__safeSleep(0.1)
-            elif app == "code":
-                for _ in range(count):
-                    if not self.is_active: break
-                    self.handler.handler("Key Press ctrl+shift+]")
-                    self._before_keypress()
-                    pyautogui.hotkey('ctrl', 'shift', ']')
-                    self._after_keypress()
-                    self.__safeSleep(0.1)
-            else:
-                for _ in range(count):
-                    if not self.is_active: break
-                    self.handler.handler("Key Press ctrl+shift+]")
-                    self._before_keypress()
-                    pyautogui.hotkey('ctrl', 'shift', ']')
-                    self._after_keypress()
-                    self.__safeSleep(0.1)
-            return
 
+        count = random.randint(1, 5)
+        label = app if app else "app"
+        self.handler.handler(f"Key Press ctrl+tab x{count} ({label})")
+
+        # Ctrl+Tab aman di semua platform (tidak memicu system shortcut macOS).
+        # Gunakan pola hold-press-release agar Ctrl tetap tertahan antar iterasi.
+        self._release_modifiers()
         pyautogui.keyDown('ctrl')
-        for _ in range(random.randint(1, 5)):
+        for _ in range(count):
             if not self.is_active: break
-            self.handler.handler("Key Press ctrl+tab")
             pyautogui.press('tab')
             self.__safeSleep(0.1)
         pyautogui.keyUp('ctrl')
+        self._release_modifiers()
 
     def typeDeleteText(self, sentences) -> None:
         if not self.is_active: return
